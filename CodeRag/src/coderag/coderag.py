@@ -330,6 +330,10 @@ def calculate_metrics_summary(results: List[Dict]) -> Dict:
         "recall": recall_score(y_true, y_pred, zero_division=0),
         "f1_score": f1_score(y_true, y_pred, zero_division=0),
         "mcc": matthews_corrcoef(y_true, y_pred),
+        # [Transparency Note for Evaluation Metrics]:
+        # Since the final decision of the CodeRAG framework relies on discrete outputs (VULNERABLE/SAFE) from the LLM,
+        # an end-to-end continuous probability distribution for the entire pipeline is mathematically unavailable.
+        # Therefore, 'auc_transformer_based' strictly evaluates the ranking performance of the Phase-1 Transformer screening.
         "auc_transformer_based": roc_auc_score(y_true, y_prob_transformer) if len(set(y_true)) > 1 else 0.0
     }
     try:
